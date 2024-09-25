@@ -1,0 +1,17 @@
+---
+import Layout from '../layouts/Layout.astro';
+import BlogCard from '../components/BlogCard.astro';
+import { getCollection } from 'astro:content';
+
+const allPosts = await getCollection('blogs');
+---
+
+<Layout title="COPS Fresher's Blogs">
+  <main class="container mx-auto px-4">
+    <h1 class="text-4xl font-bold uppercase border-b-4 border-red-500 p-4 mb-8">COPS Fresher's Blogs</h1>
+    <a href="/users" class="inline-block border-b-2 border-red-500 hover:bg-red-500 hover:text-white mb-8">View All Users</a>
+	<h2 class="text-2xl font-bold uppercase mb-2">All Posts</h2>
+    <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+      {allPosts.map((post) => <BlogCard post={post} />)}
+    </div>
+</Layout>

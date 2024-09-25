@@ -1,0 +1,30 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+
+export async function getStaticPaths() {
+  const blogEntries = await getCollection('blogs');
+  return blogEntries.map(entry => {
+    const [username, ...slugParts] = entry.slug.split('/');
+    return {
+      params: { username, slug: slugParts.join('/') },
+      props: { entry },
+    };
+  });
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+---
+
+<Layout title={entry.data.title}>
+  <main class="container mx-auto px-4">
+    <h1 class="text-4xl font-bold uppercase border-b-4 border-red-500 p-4 mb-4">{entry.data.title}</h1>
+    <p class="text-blue-600 font-bold mb-2">By {entry.slug.split('/')[0]}</p>
+    <p class="text-gray-500 mb-4">Published on: {new Date(entry.data.publishDate).toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+    <a href={`/users/${entry.slug.split('/')[0]}`} class="inline-block border-b-2 border-red-500 hover:bg-red-500 hover:text-white mb-8">View all posts by {entry.slug.split('/')[0]}</a>
+    <div class="prose max-w-none">
+      <Content />
+    </div>
+  </article>
+</Layout>

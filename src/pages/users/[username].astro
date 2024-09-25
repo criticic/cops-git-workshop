@@ -1,0 +1,31 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import BlogCard from '../../components/BlogCard.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const allPosts = await getCollection('blogs');
+  const users = [...new Set(allPosts.map(post => post.slug.split('/')[0]))];
+  return users.map(user => ({
+    params: { username: user },
+    props: { 
+      posts: allPosts.filter(post => post.slug.startsWith(`${user}/`))
+        .sort((a, b) => new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime())
+    }
+  }));
+}
+
+const { username } = Astro.params;
+const { posts } = Astro.props;
+---
+
+<Layout title={`${username}'s Blogs - COPS Fresher's Blogs`}>
+  <main class="container mx-auto px-4">
+    <h1 class="text-4xl font-bold uppercase border-b-4 border-red-500 p-4 mb-8">{username}'s Blogs</h1>
+    <a href="/users" class="inline-block border-b-2 border-red-500 hover:bg-red-500 hover:text-white mb-8">View All Users</a>
+    <p class="mb-4">Total posts: {posts.length}</p>
+    <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+      {posts.map((post) => <BlogCard post={post} />)}
+    </div>
+  </main>
+</Layout>
