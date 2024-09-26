@@ -4,4 +4,4 @@ publishDate: "2024-09-25"
 ---
 Hello
 Dhruv here
-My branch is Cera(1st year)
+My branch is Ceramic (1st year)
