@@ -1,8 +1,6 @@
 ---
 title: "How to Get Started with Git (& this blog)"
 publishDate: "2024-09-25"
-Heyyyy
-
 ---
 
 You may be wondering how to get started with Git, and this blog is a great place to start! Here's how to get started:
